@@ -230,7 +230,7 @@
 
     ```go
     var idMap map[string]int  // string: key type, int: value type
-    idMap = make(map[string], int)
+    idMap = make(map[string]int)
 
     // can also be defined as a literal map
     idMap := map[string]int {
@@ -280,15 +280,68 @@
 
 ## Week 4: Protocols and Formats
 
+- RFCs (Request for Comments) is a definitions of internet protocols and formats. Example  protocols:
+    - HTML: Hypertext Markup Language, 1866
+    - URI: Uniform Resource Identifier, 3986
+    - HTTP: Hypertext Transfer Protocol, 2616
+
+- JSON Marshalling- `Marshal()` returns JSON representation as `[]byte`: 
+
+    ```go
+    type struct Person {
+        name string
+        addr string
+        phone string
+    }
+
+    p1 := Person(name: "joe", addr: "a st.", phone: "123")
+    barr, err := json.Marshal(p1)
+    ```
+
+- JSON Unmarshalling - `Unmarshal()` converts a JSON `[]byte` into a GO object.
+
+    ```go
+    var p2 Person
+    err := json.Unmarshal(barr, &p2)
+    ```
+
+- Basic File operations:
+    - Open: get handle for access
+    - Read: read bytes into `[]byte`
+    - Write: write `[]byte` into file
+    - Close: release handle
+    - Seek: move read/write head
+
+- `io/ioutil` package has basic functions for file operations. It has implicit open/close, but this may cause problems if the files are large:
+
+    ```go
+    dat, e := ioutil.ReadFile("test.txt")  // dat is []byte filled with contents of entire file
+
+    err := ioutil.WriteFile("outfile.txt", dat, 0777)  // filename, object, permission
+    ```
+
+- OS Package File access:
+    - `os.Open()` opens a file
+    - `os.Close()` closes a file
+    - `os.Read()` reads from a file into a `[]byte`
+    - `os.Write()` writes a `[]byte` into a file
+
+    ```go
+    f, err := os.Open("dt.txt")
+    barr := make([]byte, 10)
+    nb, err := f.Read(barr)  // returns # of bytes read
+    f.Close()
+
+    f, err := os.Create("outfile.txt")
+    barr := []byte{1, 2, 3}
+    nb, err := f.Write(barr)  // writes any unicode sequence
+    nb, err := f.WriteString("Hi")  // writes a string
+    ```
 
 
+--- 
 
-
-
-
-
-
-
+## My Notes
 
 
 
@@ -312,3 +365,5 @@
 - Array literal is an array pre-defined with values, for example `var x [5] int = [5]{1, 2, 3, 4, 5}`
 
 - Hash function is used to compute the slot for a key.
+
+- JSON Marshalling is generating JSON representation from a GO object.
