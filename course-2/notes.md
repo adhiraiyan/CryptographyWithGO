@@ -277,6 +277,145 @@
 
 ## Week 4: Interfaces for Abstraction
 
+- Polymorphism: is the ability for an object to have different "forms" depending on the context. One common way to implement Polymorphism is through inheritance. But GO doesn't have inheritance.
+
+- Interfaces: is a way to get Polymorphism in GO, it is similar to inheritance with overriding. It is used to express conceptual similarity between types. Type satisfies an interface if type defines all methods specified in the interface.
+
+    ```go
+    type Shape2D interface {
+        Area() float64
+        Perimeter() float64
+    }
+
+    type Triangle {...}
+    func (t Triangle) Area() float64 {...}
+    func (t Triangle) Perimeter() float64 {...}
+    ```
+
+- Concrete types:
+    - specify the exact representation of the data and methods
+    - complete method implementation is included
+
+- Interface types:
+    - specifies some method signatures
+    - implementations are abstracted
+
+- Interface values can be treated like other values. It has two components, the dynamic type (concrete type which it is assigned to) and dynamic value (value of the dynamic type)
+
+    ```go
+    type Speaker interface {Speak ()}
+
+    type Dog struct {name string}
+    func (d Dog) Speak() {
+        fmt.Println(d.name)
+    }
+
+    func main() {
+        var s1 Speaker
+        var d1 Dog{"Brian"}
+
+        s1 = d1  // since d1 satisfies Speaker interface, dynamic type: dog, dynamic value: Brian
+        s1.Speak()
+    }
+    ```
+
+- Nil dynamic value:
+
+    ```go
+    func (d *Dog) Speak() {
+        if d == nil {
+            fmt.Println("<noise>")
+        } else {
+            fmt.Println(d.name)
+        }
+    }
+
+    func main() {
+        var s1 Speaker
+        var d1 *Dog
+    
+        s1 = d1
+        s1.Speak()  // <noise>
+    }
+    ```
+
+- Nil Interface Value: with nil dynamic type is very different from an interface with a nil dynamic value.
+
+    ```go
+    var s1 Speaker  // cannot call a method, runtime error
+    ```
+
+- Ways to use an interface: Need a function which takes multiple types of parameter
+    
+    ```go
+    type Shape2D interface {
+        Area() float64
+        Perimeter() float64
+    }
+
+    type Triangle {...}
+    func (t Triangle) Area() float64 {...}
+    func (t Triangle) Perimeter() float64 {...}
+    
+    type Rectangle {...}
+    func (r Rectangle) Area() float64 {...}
+    func (r Rectangle) Perimeter() float64 {...}
+
+    func FitInYard(s Shape2D) bool {
+        if (s.Area() > 100) && (s.Perimeter() > 100) {
+            return True
+        }
+        return False
+    }
+
+    func main() {
+        var s1 Shape2D
+        var c1 Triangle{...}
+
+        s1 = c1
+        fmt.Println(FitInYard(s1))
+    }
+    ```
+
+- Empty Interface specifies no methods. All types satisfy the empty interface. Use it to have a function accept any type as a parameter.
+
+    ```go
+    func PrintMe(val interface{}) {
+        fmt.Println(val)
+    }
+    ```
+
+- Interfaces hide the difference between types. But sometimes you need to treat different types in different ways. In the case where the concrete types matter, you will need to expose the type differences. We can use type assertions for disambiguation.
+
+    ```go
+    func DrawShape (s Shape2D) bool {
+        rect, ok := s.(Rectangle)  // if contains, rect==concrete, ok==true, if not, rect==zero
+        if ok {
+            DrawRect(rect)
+        }
+        
+        tri, ok := s.(Triangle)
+        if ok {
+            DrawTriangle(tri)
+        }
+    }
+
+    func DrawRect (r Rectangle) {...}
+    func DrawTriangle (t Triangle) {...}
+    ```
+
+- The above can be done simply using Type Switch:
+
+    ```go
+    func DrawShape (s Shape2D) bool {
+        switch:= sh := s.(type) {
+        case Rectangle:
+            DrawRect(sh)
+        case Triangle:
+            DrawTriangle(sh)
+        }
+    }
+    ```
 
 
 --- 
