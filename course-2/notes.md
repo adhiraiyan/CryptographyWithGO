@@ -178,8 +178,99 @@
 
 ## Week 3: Object Orientation in GO
 
+- Associating data with methods in GO: When you define a function you give it a receiver type which is the type the method is associated with.
 
+    ```go
+    type MyInt int
 
+    func (mi MyInt) Double () int{
+        return int(mi*2)
+    }
+
+    func main() {
+        // Object v is an implicit argument to the method (Call by Value)
+        v := MyInt(3)
+        fmt.Println(v.Double())
+    }
+    ```
+
+- structs and methods together allow arbitrary data and functions to be composed:
+
+    ```go
+    type Point struct {
+        x float64
+        y float64
+    }
+
+    func (p Point) DistToOrig() {
+        t := math.Pow(p.x, 2) + math.Pow(p.y, 2)
+        return math.Sqrt(t) 
+    }
+
+    func main() {
+        p1 := Point(3, 4)
+        fmt.Println(p1.DistToOrig())
+    }
+    ```
+
+- Controlling access by defining public functions to allow access to hidden data:
+
+    ```go
+    package data
+    var x int = 1
+    func PrintX() {fmt.Println(x)}
+
+    package main
+    import "data"
+    func main() {data.PrintX()}  // 1
+    ```
+
+- Controlling access to structs:
+
+    ```go
+    package data
+    type Point struct {
+        x float64
+        y float64
+    }
+
+    // allow modifying
+    func (p *Point) InitMe(xn, yn float64) {
+        p.x = xn
+        p.y = yn
+    }
+    
+    // Scaling
+    func (p *Point) Scale(v float64) {
+        p.x = p.x * v
+        p.y = p.y * v
+    }
+
+    package main
+    func main() {
+        var p data.Point
+        p.InitMe(3, 4)
+        p.Scale(2)
+    }
+    ```
+
+- Limitation of Methods: The receiver is passed implicitly as an argument to the method. Since argument passing is call by value, the method cannot modify the data inside the receiver. 
+
+- No need to dereference a receiver pointer:
+
+    ```go
+    func (p *Point) OffsetX(v int) {
+        p.x = p.x + v  // we don't say *p.x = *p.x, the compiler implicitly deference's
+    }
+
+    func main() {
+        p := Point(3, 4)
+        p.OffsetX(5)  // doesn't need to reference here like &OffsetX
+        fmt.Println(p.x)
+    }
+    ```
+
+- Good programming practices: Either have pointer receivers for all methods or none at all.
 
 
 --- 
@@ -204,3 +295,9 @@
 - Call by reference: is not built in GO, all you have to do is pass a pointer.
 
 - Debugging tip: When you have a bug, its either the function is wrong, written wrong or the data that's passed to it is wrong. To make sure the data you get is as it should be you do data test, then function test to verify if a function is working as it should be and finally integration test to make sure when the data is passed around, it behaves as it should be.
+
+- Classes: Collection of data fields and functions that share a well defined responsibility.
+
+- Object: is an instance of a class.
+
+- Encapsulation: allow the data to be only accessed through methods.
