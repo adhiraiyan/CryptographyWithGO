@@ -25,7 +25,19 @@
 
 ## Week 2: Concurrency basics 
 
+- Operating system schedules processes for execution. It gives the illusion of parallel execution.
 
+- One downside of processes is that the context switching time may be long since it takes time to read data from and write to memory. To overcome this, a thread was created, threads share some context and many threads can exist in one process. OS schedules threads rather than processes.
+
+- Goroutines are like a thread in GO. Many Goroutines execute withing a single OS thread. The process of scheduling goroutines inside an OS thread is done by the GO runtime scheduler. GO runtime scheduler is like a little OS inside a single OS thread. Since all the goroutines are running inside a thread, unless you create a logical process (is mapped to a thread) you can't achieve true parallelism.
+
+- With concurrent code, its difficult to debug since the overall state of the machine is not deterministic.
+
+- Order of execution between tasks isn't known, meaning the instructions can be interleaved in different ways. To make sure the code works as it should, we must consider all possibilities of interleavings.
+
+- Race conditions is a problem where the outcome of the program depends on interleavings.Since interleavings are non-deterministic, the outcome will become non-deterministic. Races occur due to communication between tasks, for example say you have two tasks that needs to communicate information about a shared variable and say one writes or reads before the other should and communicate the results at different times, this will lead to different outcomes on different executions.
+
+- Threads are largely independent, they mostly don't have to communicate with each other.
 
 
 --- 
@@ -54,3 +66,7 @@
 ## Definitions
 
 - Hiding latency: is executing a task while another task is waiting.
+
+- A process is an instance of a running program.
+
+- Context switch: control flow changes from one process to another.
