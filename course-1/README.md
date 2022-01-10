@@ -69,17 +69,54 @@ __Learning Objectives__
 
 ### Lesson 3. What is Cryptanalysis?
 
-- Enigma and Venona
+- Enigma is a Polyalphabetic cipher on steroids. It can convert plaintext to ciphertext characters at any given time. However that mapping changes for each character. THe order in which the mappings occur is controlled by the configuration of the machine an its initial settings. These configurations change regularly.
 
+- Computational Security: Quantifying the effort to break a cipher.
+    - Brute Force Attack (BFA) – try every possible key
+    - BFA requires O(key space) operations to break
+    - Spurious messages: messages that are sensible, created from different key words but which may not actually be the plain text.
+    - Unicity Distance: the amount of text that is expected to reduce the number of spurious messages to zero.
+    - Weaknesses reduce the effort needed
+    - Strength is number of keys needed to be tried
+    - Computationally secure – best attack not much better than Brute Force
+    - Colossus: designed and built at Bletchley to break the lorenz cipher was the first fully programmable digital computer.
+
+- Vernam Cipher also known as One-Time Pad is mathematically secure. To create a one-time pad, you simply generate a very long string of random characters that will serve as the key, and give copies to both Alice and Bob. To use a one-time pad, you simply combine the plain text with the key, character by character, to produce the ciphertext. The recipient does the same thing with their copy of the key, only in reverse, to recover the plain text. The security of the algorithm stems from the fact that the key is completely random, such that any character in the key could literally be any character. The problem with a one-time pad is that as the name implies, it can only be used once. Another problem is that it requires vast quantities of key material.
 
 - Further Readings:
-    - []()
+    - [One-time pad](https://en.wikipedia.org/wiki/One-time_pad)
+    - [Cryptology and Data Secrecy : The Vernam Cipher](http://www.pro-technix.com/information/crypto/pages/vernam_base.html)
+    - [Enigma machine](https://en.wikipedia.org/wiki/Enigma_machine)
+    - [Cryptanalysis of the Enigma](https://en.wikipedia.org/wiki/Cryptanalysis_of_the_Enigma)
+    - [Venona project](https://en.wikipedia.org/wiki/Venona_project)
 
 ### Lesson 4. Modern Guiding Principles
 
+- Kerckhoffs' Principle: states that a cryptosystem should remain secure, even if the adversary knows every detail of the system, except the key. This underscores the need to safeguard the security of the key, which opens its own Pandora's box of complications. Included in this is the key _distribution problem_, the resulting desirability of _public key cryptosystems_ and the need and role for _trusted third parties_.
+
+- Historical cryptosystems relied on secret algorithms, this was called security through obscurity. This was bad cause if the algorithm became public, the key was easily broken.
+
+- Auguste Kerckhoffs’ design principles
+    - System should not have complex rules
+    - Algorithms shouldn’t need to be secret
+    - Security should rely on simple keys
+
+- Key distribution problem: reflects the difficulty generating sufficient key material, securely distributing it to the parties that need it, and being able to detect when and if there's been a compromise. An alternative is to have large groups of users share a common key, to reduce the total number of keys to a manageable level. The problem here is that the the larger the group, the more valuable a key compromise becomes to your adversary.
+
+- Public key cryptography was devised as an alternative to the key distribution problem. The idea was to use two different but related keys such that two people can communicate securely as long as each one has one of the keys. This is what is known as _asymmetric cryptography_. We make one of the keys public knowledge, say Alice can generate both keys, keep one all to herself and publish the other for Bob to look up.
+
+- Trent distributes secret symmetric keys
+    - Trusted to give the right key
+    - Trusted to not give the key to anyone else
+    - Trusted to not keep a copy of the key
+
+- Trent publishes public asymmetric keys
+    - Trusted to properly associate key with owner
+    - Trusted to vet the identity of the key owner
+    - Trusted to verify the owner of a key to others
 
 - Further Readings:
-    - []()
+    - [Kerckhoffs's principle](https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle)
 
 ---
 ## Week 2
